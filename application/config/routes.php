@@ -6,4 +6,6 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 
-// $route['profile'] = 'Admin/C_profile';
+$route['review'] = 'C_Index';
+$route['review/(:any)'] = 'C_Index/$1';
+$route['review/(:any)/(:any)'] = 'C_Index/$1/$2';

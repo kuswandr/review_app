@@ -12,6 +12,9 @@
 		.str-rating {
 			cursor: pointer;
 		}
+		.str-rating2 {
+			cursor: pointer;
+		}
 		.checked {
 		  color: orange;
 		}
@@ -20,7 +23,7 @@
 <body>
 <div class="container">
 	<div class="col-md-12">
-		<form method="post" id="formrate" action="http://travling.id:8080/api/v1/reviews/" target="_blank">
+		<form method="post" enctype="multipart/form-data" id="formrate" action="<?= base_url('review/create') ?>">
 		<table width="100%" class="table">
 			<tr>
 				<td>
@@ -42,8 +45,7 @@
 			</tr>
 			<tr>
 				<td class="text-left">
-					<input type="file" class="btn btn-primary" id = "imagess"name="imagess">
-					<input type="hidden" class="btn btn-primary" id = "image" name="image">
+					<input type="file" class="btn btn-primary" id = "image" name="image">
 				</td>
 				<td class="text-right">
 						<button class="btn btn-md btn-success submittt" type="button" >Kirim</button>
@@ -56,37 +58,37 @@
 	<h4>Result Ratings:</h4>
 			<div class="col-md-12">
 					<?php if ($hasil) { 
-						foreach ($hasil['data'] as $key => $value) { ?>
+						foreach ($hasil->data as $key => $value) { ?>
 				<table class="table table-responsive table-bordered">
 					<tr class="bg-success">
 						<td width="20%">
 							<b>
-								user <?= $value['id'] ?>
+								user <?= $value->id ?>
 							</b>
 						</td>
 						<td width="40%">
 							<?php
 								for ($i=1; $i < 6; $i++) {  ?>
-								<span rate="<?= $i ?>" class="fa fa-star <?= $value['rating'] != '0' ? (($value['rating'] >= $i) ? 'checked' : '') :'' ?>"></span>
+								<span rate="<?= $i ?>" class="fa fa-star <?= $value->rating != '0' ? (($value->rating >= $i) ? 'checked' : '') :'' ?>"></span>
 							<?php 	}
-							echo $value['rating'];
+							echo $value->rating;
 							?>
 						</td>
 						<td class="text-right" width="40%">
-							<input type="hidden" name="rate_u" value="<?= $value['rating'] ?>">
-							<input type="hidden" name="review_u" value="<?= $value['review'] ?>">
-							<button class="btn btn-xs btn-danger delrow" id="<?= $value['id'] ?>"> <b class="fa fa-times "></b></button>
-							<button data-toggle="modal" data-target="#myModal" class="btn btn-xs btn-primary btnedit"> <b class="fa fa-edit "></b></button>
+							<input type="hidden" name="rate_u" value="<?= $value->rating ?>">
+							<input type="hidden" name="review_u" value="<?= $value->review ?>">
+							<button class="btn btn-xs btn-danger delrow" id="<?= $value->id ?>"> <b class="fa fa-times "></b></button>
+							<button data-toggle="modal" id="<?= $value->id ?>" data-target="#modalEdit" class="btn btn-xs btn-primary btnedit"> <b class="fa fa-edit "></b></button>
 						</td>
 					</tr>
 					<tr >
 						<td colspan="3">
 							<i>
-								<?= $value['review'] ?>
-								<?php if ($value['image']) { ?>
-									<img src="<?= $value['image'] ?>" alt="" />
-								<?php } ?>
+								<?= $value->review ?>
 							</i>
+								<?php if ($value->image) { ?>
+									<img src="<?= $value->image ?>" alt="" />
+								<?php } ?>
 						</td>
 					</tr>
 				</table>
@@ -94,7 +96,7 @@
 			</div>
 			
 	</div>
-	<div id="myModal" class="modal fade" role="dialog">
+	<div id="modalEdit" class="modal fade" role="dialog">
 							  <div class="modal-dialog">
 
 							    <!-- Modal content-->
@@ -103,19 +105,20 @@
 							        <button type="button" class="close" data-dismiss="modal">&times;</button>
 							        <h4 class="modal-title">Edit Data</h4>
 							      </div>
+							      	<form method="post" id="formUpdate" enctype="multipart/form-data" action="<?= base_url('review/update') ?>">
+							      		<input type="hidden" name="id" >
 							      <div class="modal-body">
-							      	<form method="post" id="formUpdate" action="http://travling.id:8080/api/v1/reviews/" target="_blank">
 									<table width="100%" class="table">
 										<tr>
 											<td>
 												<b><h2>Review</h2></b>
 											</td>
 											<td class="text-right">
-												<span rate="1" class="str-rating fa fa-2x fa-star"></span>
-												<span rate="2" class="str-rating fa fa-2x fa-star"></span>
-												<span rate="3" class="str-rating fa fa-2x fa-star"></span>
-												<span rate="4" class="str-rating fa fa-2x fa-star"></span>
-												<span rate="5" class="str-rating fa fa-2x fa-star"></span>
+												<span rate="1" class="str-rating2 fa fa-2x fa-star"></span>
+												<span rate="2" class="str-rating2 fa fa-2x fa-star"></span>
+												<span rate="3" class="str-rating2 fa fa-2x fa-star"></span>
+												<span rate="4" class="str-rating2 fa fa-2x fa-star"></span>
+												<span rate="5" class="str-rating2 fa fa-2x fa-star"></span>
 												<input type="hidden" name="rating">
 											</td>
 										</tr>
@@ -126,13 +129,11 @@
 										</tr>
 										<tr>
 											<td class="text-left">
-												<input type="file" class="btn btn-primary" id = "imagess"name="imagess">
-												<input type="hidden" class="btn btn-primary" id = "image" name="image">
+												<input type="file" class="btn btn-primary" id = "image"name="image">
 											</td>
 											<td class="text-right">
 											</td>
 										</tr>
-									</form>
 									</table>
 							      </div>
 							      <div class="modal-footer">
